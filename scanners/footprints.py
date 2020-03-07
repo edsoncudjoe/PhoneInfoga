@@ -5,6 +5,7 @@
 # @url    : https://github.com/sundowndev
 # @author : Raphael Cerveaux (sundowndev)
 
+import time
 from urllib.parse import urlencode
 from lib.output import *
 from lib.format import *
@@ -17,7 +18,7 @@ localNumber = ""
 internationalNumber = ""
 numberCountryCode = ""
 customFormatting = ""
-
+sleepTime = 120
 
 def osintIndividualScan():
     global numberObj
@@ -39,6 +40,7 @@ def osintIndividualScan():
     dorks = json.load(open("osint/individuals.json"))
 
     for dork in dorks:
+        time.sleep(sleepTime)
         if dork["dialCode"] is None or dork["dialCode"] == numberCountryCode:
             if customFormatting:
                 dorkRequest = replaceVariables(
@@ -66,6 +68,7 @@ def osintReputationScan():
     dorks = json.load(open("osint/reputation.json"))
 
     for dork in dorks:
+        time.sleep(sleepTime)
         if customFormatting:
             dorkRequest = replaceVariables(
                 dork["request"], numberObj
@@ -89,6 +92,7 @@ def osintSocialMediaScan():
     dorks = json.load(open("osint/social_medias.json"))
 
     for dork in dorks:
+        time.sleep(sleepTime)
         if customFormatting:
             dorkRequest = replaceVariables(
                 dork["request"], numberObj
@@ -122,6 +126,7 @@ def osintDisposableNumScan():
     dorks = json.load(open("osint/disposable_num_providers.json"))
 
     for dork in dorks:
+        time.sleep(sleepTime)
         dorkRequest = replaceVariables(dork["request"], numberObj)
 
         info("Searching for footprints on {}...".format(dork["site"]))
@@ -197,6 +202,7 @@ def osintScan(numberObject, rerun=False):
             internationalNumber, localNumber
         )
     for result in search(req, stop=10):
+        time.sleep(sleepTime)
         plus("Result found: " + result)
 
     osintReputationScan()

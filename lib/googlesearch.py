@@ -19,6 +19,7 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 
 browser = None
+chrome_driver_loc = "/usr/local/bin/chromedriver"
 
 
 def getFirefoxBrowser():
@@ -35,6 +36,15 @@ def getFirefoxBrowser():
     return webdriver.Firefox(firefox_binary=binary)
 
 
+def chromeBrowser():
+    opts = webdriver.ChromeOptions()
+    opts._binary_location = '/usr/bin/chromium-browser'
+    chrome_browser = webdriver.Chrome(chrome_options=opts,
+            executable_path=chrome_driver_loc )
+    chrome_browser.set_window_size(1000, 1000)
+    return chrome_browser
+
+
 def closeBrowser():
     if browser is not None:
         browser.quit()
@@ -46,7 +56,7 @@ def search(req, stop):
     if google_api_key and google_cx_id:
         return searchApi(req, stop)
 
-    browser = getFirefoxBrowser()
+    browser = chromeBrowser()
 
     try:
         REQ = urlencode({"q": req, "num": stop, "hl": "en"})
